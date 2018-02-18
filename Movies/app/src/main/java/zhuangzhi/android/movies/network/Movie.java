@@ -21,11 +21,11 @@ public class Movie {
     @SerializedName("overview")
     private String mOverview;
     @SerializedName("vote_average")
-    private long mUserRating;
+    private double mUserRating;
     @SerializedName("release_date")
     private String mReleaseDate;
 
-    public Movie(long id, String title, String posterPath, String overview, long userRating, String releaseDate) {
+    public Movie(long id, String title, String posterPath, String overview, double userRating, String releaseDate) {
         mId = id;
         mTitle = title;
         mPosterPath = posterPath;
@@ -50,7 +50,7 @@ public class Movie {
         return mOverview;
     }
 
-    public long getUserRating() {
+    public double getUserRating() {
         return mUserRating;
     }
 

@@ -50,7 +50,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public void addAll(List<Movie> data) {
+        if (movies.size() > 0) {
+            movies.clear();
+        }
         movies.addAll(data);
+        notifyDataSetChanged();
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
