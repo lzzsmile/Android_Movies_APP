@@ -12,6 +12,6 @@ import retrofit2.http.Query;
 public interface MovieDatabase {
 
     @GET("3/movie/{sort_by}")
-    Call<Movies> discoverMovies(@Path("sort_by") String sortBy, @Query("api_key") String apiKey);
+    Call<Movies> fetchMovies(@Path("sort_by") String sortBy, @Query("api_key") String apiKey);
 
 }
