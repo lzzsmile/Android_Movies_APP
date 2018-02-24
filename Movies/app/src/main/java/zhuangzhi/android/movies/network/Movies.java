@@ -11,9 +11,9 @@ import java.util.List;
 
 public class Movies {
     @SerializedName("results")
-    private List<Movie> movies = new ArrayList<>();
+    private ArrayList<Movie> movies = new ArrayList<>();
 
-    public List<Movie> getMovies() {
+    public ArrayList<Movie> getMovies() {
         return movies;
     }
 }

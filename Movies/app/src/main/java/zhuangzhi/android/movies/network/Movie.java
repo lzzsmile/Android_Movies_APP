@@ -1,5 +1,6 @@
 package zhuangzhi.android.movies.network;
 
+import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
@@ -8,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by zhuangzhili on 2018-02-16.
  */
 
-public class Movie {
+public class Movie implements Parcelable{
 
     public static final String LOG_TAG = Movie.class.getCanonicalName();
 
@@ -58,5 +59,40 @@ public class Movie {
         return mReleaseDate;
     }
 
+    //The parcelable part
+    private Movie(Parcel source) {
+        this.mId = source.readLong();
+        this.mTitle = source.readString();
+        this.mPosterPath = source.readString();
+        this.mOverview = source.readString();
+        this.mUserRating = source.readDouble();
+        this.mReleaseDate = source.readString();
+    }
 
+    public static final Parcelable.Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel parcel) {
+            return new Movie(parcel);
+        }
+
+        @Override
+        public Movie[] newArray(int i) {
+            return new Movie[i];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(this.mId);
+        parcel.writeString(this.mTitle);
+        parcel.writeString(this.mPosterPath);
+        parcel.writeString(this.mOverview);
+        parcel.writeDouble(this.mUserRating);
+        parcel.writeString(this.mReleaseDate);
+    }
 }
