@@ -3,4 +3,14 @@
 
     <string name="sort_by_popular">Popular</string>
     <string name="sort_by_top_rated">Top Rated</string>
+
+    <string name="detail_movie_poster_container">Movie Poster</string>
+
+    <string name="detail_release_date">Release Date:</string>
+    <string name="detail_vote_average">Vote Average:</string>
+    <string name="detail_plot_synopsis">Synopsis:</string>
+    <string name="detail_error_message">Movie details are not available!</string>
+
+    <string name="movie_detail_activity_title">Movie Details</string>
+
 </resources>
