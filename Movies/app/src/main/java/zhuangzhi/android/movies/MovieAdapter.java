@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import zhuangzhi.android.movies.network.Movie;
@@ -20,9 +21,9 @@ import zhuangzhi.android.movies.network.Movie;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
-    private List<Movie> movies;
+    private ArrayList<Movie> movies;
 
-    public MovieAdapter(List<Movie> movies) {
+    public MovieAdapter(ArrayList<Movie> movies) {
         this.movies = movies;
     }
 
@@ -37,11 +38,20 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
-        Movie movie = movies.get(position);
+        final Movie movie = movies.get(position);
         Picasso.with(holder.moviePoster.getContext())
                 .load(movie.getPosterUrl())
+                .fit()
                 .placeholder(R.drawable.movie_poster_holder)
                 .into(holder.moviePoster);
+        holder.moviePoster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), DetailActivity.class);
+                intent.putExtra("Movie", movie);
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -57,19 +67,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         notifyDataSetChanged();
     }
 
-    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class MovieViewHolder extends RecyclerView.ViewHolder{
 
         final ImageView moviePoster;
 
         MovieViewHolder(View itemView) {
             super(itemView);
             moviePoster = itemView.findViewById(R.id.movie_poster);
-        }
-
-        @Override
-        public void onClick(View view) {
-            Intent intent = new Intent(view.getContext(), DetailActivity.class);
-            view.getContext().startActivity(intent);
         }
     }
 

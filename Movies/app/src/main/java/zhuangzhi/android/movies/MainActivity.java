@@ -5,6 +5,7 @@ import android.media.VolumeShaper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
@@ -21,10 +22,9 @@ public class MainActivity extends AppCompatActivity {
     private final static String SORT_TYPE_1 = "popular";
     private final static String SORT_TYPE_2 = "top_rated";
     private final static String SORT_TYPE_SELECTION = "selectedSortType";
-    private int sortType = R.id.action_top_rated;
+    private int sortType = R.id.action_popular;
 
     private MovieAdapter movieAdapter;
-    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,16 +32,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, getGridColNum());
-        recyclerView = findViewById(R.id.recycler_movies);
+        RecyclerView recyclerView = findViewById(R.id.recycler_movies);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         movieAdapter = new MovieAdapter(new ArrayList<Movie>());
         recyclerView.setAdapter(movieAdapter);
 
         if (savedInstanceState == null) {
-            fetchMovies(SORT_TYPE_2);
+            fetchMovies(SORT_TYPE_1);
         } else {
-            fillAdapterOnSelection(savedInstanceState.getInt(SORT_TYPE_SELECTION, R.id.action_top_rated));
+            fillAdapterOnSelection(savedInstanceState.getInt(SORT_TYPE_SELECTION, R.id.action_popular));
         }
 
     }
@@ -64,14 +64,15 @@ public class MainActivity extends AppCompatActivity {
         moviesTask.execute(sortBy);
     }
 
-    private void fillAdapterOnSelection(Integer sortType) {
-        this.sortType = sortType;
-        Log.d(LOG_TAG, "Start populate Recyler VIew based on Menu Selection!");
-        if (sortType == R.id.action_popular) {
-            Log.d(LOG_TAG, "Start fetch movie on popular");
-            fetchMovies(SORT_TYPE_1);
-        } else if (sortType == R.id.action_top_rated) {
-            fetchMovies(SORT_TYPE_2);
+    private void fillAdapterOnSelection(Integer sort) {
+        sortType = sort;
+        switch (sortType) {
+            case R.id.action_popular:
+                fetchMovies(SORT_TYPE_1);
+                break;
+            case R.id.action_top_rated:
+                fetchMovies(SORT_TYPE_2);
+                break;
         }
     }
 
@@ -84,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        Log.d(LOG_TAG, "Menu Item selected!");
         fillAdapterOnSelection(itemId);
         return super.onOptionsItemSelected(item);
     }

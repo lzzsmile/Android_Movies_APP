@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -17,7 +18,7 @@ import zhuangzhi.android.movies.network.Movies;
  * Created by zhuangzhili on 2018-02-18.
  */
 
-public class FetchMoviesTask extends AsyncTask<String, Void, List<Movie>> {
+public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
 
     private final static String LOG_TAG = FetchMoviesTask.class.getCanonicalName();
 
@@ -28,7 +29,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, List<Movie>> {
     }
 
     @Override
-    protected List<Movie> doInBackground(String... strings) {
+    protected ArrayList<Movie> doInBackground(String... strings) {
         String sortBy = strings[0];
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -48,7 +49,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, List<Movie>> {
     }
 
     @Override
-    protected void onPostExecute(List<Movie> movies) {
+    protected void onPostExecute(ArrayList<Movie> movies) {
         if (movies != null) {
             mAdapter.addAll(movies);
         }
