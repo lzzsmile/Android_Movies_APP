@@ -110,10 +110,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         String[] projection = {
                 MovieContract.MovieEntry.COLUMN_MOVIE_ID,
                 MovieContract.MovieEntry.COLUMN_MOVIE_TITLE,
-                MovieContract.MovieEntry.COLUMN_MOVIE_DESCRIPTION,
                 MovieContract.MovieEntry.COLUMN_MOVIE_POSTER_PATH,
-                MovieContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE,
-                MovieContract.MovieEntry.COLUMN_MOVIE_VOTE_AVERAGE
+                MovieContract.MovieEntry.COLUMN_MOVIE_DESCRIPTION,
+                MovieContract.MovieEntry.COLUMN_MOVIE_VOTE_AVERAGE,
+                MovieContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE
         };
         return new CursorLoader(
                 this,

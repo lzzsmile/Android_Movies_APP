@@ -26,10 +26,10 @@ public class MovieDBHelper extends SQLiteOpenHelper {
                 MovieEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 MovieEntry.COLUMN_MOVIE_ID + " INTEGER NOT NULL," +
                 MovieEntry.COLUMN_MOVIE_TITLE + " TEXT NOT NULL," +
-                MovieEntry.COLUMN_MOVIE_DESCRIPTION + " TEXT NOT NULL," +
                 MovieEntry.COLUMN_MOVIE_POSTER_PATH + " TEXT NOT NULL," +
-                MovieEntry.COLUMN_MOVIE_RELEASE_DATE + " TEXT NOT NULL," +
+                MovieEntry.COLUMN_MOVIE_DESCRIPTION + " TEXT NOT NULL," +
                 MovieEntry.COLUMN_MOVIE_VOTE_AVERAGE + " FLOAT NOT NULL" +
+                MovieEntry.COLUMN_MOVIE_RELEASE_DATE + " TEXT NOT NULL," +
                 ");";
 
         sqLiteDatabase.execSQL(CREATE_TABLE_MOVIES);
