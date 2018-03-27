@@ -1,18 +1,16 @@
-package zhuangzhi.android.movies;
+package zhuangzhi.android.movies.network;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import zhuangzhi.android.movies.network.Movie;
-import zhuangzhi.android.movies.network.MovieDatabase;
-import zhuangzhi.android.movies.network.Movies;
+import zhuangzhi.android.movies.BuildConfig;
+import zhuangzhi.android.movies.adapter.MovieAdapter;
 
 /**
  * Created by zhuangzhili on 2018-02-18.

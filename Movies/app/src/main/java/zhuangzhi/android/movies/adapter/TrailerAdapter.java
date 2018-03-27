@@ -1,4 +1,4 @@
-package zhuangzhi.android.movies;
+package zhuangzhi.android.movies.adapter;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import zhuangzhi.android.movies.R;
 import zhuangzhi.android.movies.network.Trailer;
 
 /**

@@ -3,6 +3,7 @@
 
     <string name="sort_by_popular">Popular</string>
     <string name="sort_by_top_rated">Top Rated</string>
+    <string name="sort_by_favorite">Favorite</string>
 
     <string name="detail_movie_poster_container">Movie Poster</string>
 

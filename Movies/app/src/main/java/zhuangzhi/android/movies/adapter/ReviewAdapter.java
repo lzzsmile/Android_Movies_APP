@@ -1,4 +1,4 @@
-package zhuangzhi.android.movies;
+package zhuangzhi.android.movies.adapter;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import zhuangzhi.android.movies.R;
 import zhuangzhi.android.movies.network.Review;
 
 /**

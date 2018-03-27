@@ -1,34 +1,33 @@
 package zhuangzhi.android.movies;
 
-import android.content.res.Configuration;
-import android.media.VolumeShaper;
+import android.database.Cursor;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import zhuangzhi.android.movies.adapter.MovieAdapter;
+import zhuangzhi.android.movies.data.MovieContract;
+import zhuangzhi.android.movies.network.FetchMoviesTask;
 import zhuangzhi.android.movies.network.Movie;
-import zhuangzhi.android.movies.network.MovieDatabase;
-import zhuangzhi.android.movies.network.Movies;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private final static String LOG_TAG = MainActivity.class.getCanonicalName();
 
     private final static String SORT_TYPE_1 = "popular";
     private final static String SORT_TYPE_2 = "top_rated";
+    private final static String SORT_TYPE_3 = "favorite";
     private final static String SORT_TYPE_SELECTION = "selectedSortType";
+    private final static int FAVORITE_LOADER_ID = 1;
     private int sortType = R.id.action_popular;
 
     private MovieAdapter movieAdapter;
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         movieAdapter = new MovieAdapter(new ArrayList<Movie>());
         recyclerView.setAdapter(movieAdapter);
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null || !savedInstanceState.containsKey(SORT_TYPE_SELECTION)) {
             fetchMovies(SORT_TYPE_1);
         } else {
             fillAdapterOnSelection(savedInstanceState.getInt(SORT_TYPE_SELECTION, R.id.action_popular));
@@ -70,8 +69,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchMovies(String sortBy) {
-        FetchMoviesTask moviesTask = new FetchMoviesTask(movieAdapter);
-        moviesTask.execute(sortBy);
+        if (!sortBy.equals(SORT_TYPE_3)) {
+            FetchMoviesTask moviesTask = new FetchMoviesTask(movieAdapter);
+            moviesTask.execute(sortBy);
+        } else {
+            getSupportLoaderManager().initLoader(FAVORITE_LOADER_ID, null, this);
+        }
+
     }
 
     private void fillAdapterOnSelection(Integer sort) {
@@ -83,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_top_rated:
                 fetchMovies(SORT_TYPE_2);
                 break;
+            case R.id.action_favorite:
+                fetchMovies(SORT_TYPE_3);
         }
     }
 
@@ -97,5 +103,35 @@ public class MainActivity extends AppCompatActivity {
         int itemId = item.getItemId();
         fillAdapterOnSelection(itemId);
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String[] projection = {
+                MovieContract.MovieEntry.COLUMN_MOVIE_ID,
+                MovieContract.MovieEntry.COLUMN_MOVIE_TITLE,
+                MovieContract.MovieEntry.COLUMN_MOVIE_DESCRIPTION,
+                MovieContract.MovieEntry.COLUMN_MOVIE_POSTER_PATH,
+                MovieContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE,
+                MovieContract.MovieEntry.COLUMN_MOVIE_VOTE_AVERAGE
+        };
+        return new CursorLoader(
+                this,
+                MovieContract.MovieEntry.CONTENT_URI,
+                projection,
+                null,
+                null,
+                null
+        );
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        movieAdapter.addAll(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }

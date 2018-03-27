@@ -1,7 +1,7 @@
-package zhuangzhi.android.movies;
+package zhuangzhi.android.movies.adapter;
 
-import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +13,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import zhuangzhi.android.movies.DetailActivity;
+import zhuangzhi.android.movies.R;
+import zhuangzhi.android.movies.data.MovieContract;
 import zhuangzhi.android.movies.network.Movie;
 
 /**
@@ -64,6 +67,25 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             movies.clear();
         }
         movies.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    public void addAll(Cursor cursor) {
+        if (movies.size() > 0) {
+            movies.clear();
+        }
+        if (cursor != null && cursor.moveToFirst()) {
+            while (cursor.moveToNext()) {
+                long id = cursor.getLong(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_ID));
+                String title = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_TITLE));
+                String path = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_POSTER_PATH));
+                String description = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_DESCRIPTION));
+                double rating = cursor.getDouble(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_VOTE_AVERAGE));
+                String release = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE));
+                Movie movie = new Movie(id, title, path, description, rating, release);
+                movies.add(movie);
+            }
+        }
         notifyDataSetChanged();
     }
 
