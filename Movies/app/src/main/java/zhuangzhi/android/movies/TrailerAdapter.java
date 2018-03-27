@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import zhuangzhi.android.movies.network.Trailer;
 
@@ -54,6 +55,14 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     @Override
     public int getItemCount() {
         return trailers.size();
+    }
+
+    public void addAll(List<Trailer> data) {
+        if (trailers.size() > 0) {
+            trailers.clear();
+        }
+        trailers.addAll(data);
+        notifyDataSetChanged();
     }
 
     class TrailerViewHolder extends RecyclerView.ViewHolder {

@@ -43,7 +43,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
             Movies movies = moviesCall.execute().body();
             return movies.getMovies();
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Cannot fetch data from the Movie DB!");
+            Log.e(LOG_TAG, "Cannot fetch movies from the Movie DB!");
         }
         return null;
     }
