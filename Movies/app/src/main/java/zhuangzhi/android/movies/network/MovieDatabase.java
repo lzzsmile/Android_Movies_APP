@@ -14,4 +14,10 @@ public interface MovieDatabase {
     @GET("3/movie/{sort_by}")
     Call<Movies> fetchMovies(@Path("sort_by") String sortBy, @Query("api_key") String apiKey);
 
+    @GET("3/movie/{id}/videos")
+    Call<Trailers> findTrailersById(@Path("id") long movieId, @Query("api_key") String apiKey);
+
+    @GET("3/movie/{id}/reviews")
+    Call<Reviews> findReviewsById(@Path("id") long movieId, @Query("api_key") String apiKey);
+
 }
