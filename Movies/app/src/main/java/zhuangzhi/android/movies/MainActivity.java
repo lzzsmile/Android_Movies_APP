@@ -7,13 +7,20 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import zhuangzhi.android.movies.network.Movie;
+import zhuangzhi.android.movies.network.MovieDatabase;
+import zhuangzhi.android.movies.network.Movies;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,10 +54,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private int getGridColNum() {
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            return 3;
-        }
-        return 2;
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int widthDivider = 400;
+        int width = displayMetrics.widthPixels;
+        int nColumns = width/widthDivider;
+        if (nColumns < 2) return 2;
+        return nColumns;
     }
 
     @Override
