@@ -9,11 +9,13 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
 
+import zhuangzhi.android.movies.adapter.FavoriteAdapter;
 import zhuangzhi.android.movies.adapter.MovieAdapter;
 import zhuangzhi.android.movies.data.MovieContract;
 import zhuangzhi.android.movies.network.FetchMoviesTask;
@@ -31,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private int sortType = R.id.action_popular;
 
     private MovieAdapter movieAdapter;
+    private FavoriteAdapter favoriteAdapter;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +42,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, getGridColNum());
-        RecyclerView recyclerView = findViewById(R.id.recycler_movies);
+        recyclerView = findViewById(R.id.recycler_movies);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         movieAdapter = new MovieAdapter(new ArrayList<Movie>());
-        recyclerView.setAdapter(movieAdapter);
+        favoriteAdapter = new FavoriteAdapter();
 
-        if (savedInstanceState == null || !savedInstanceState.containsKey(SORT_TYPE_SELECTION)) {
+        if (savedInstanceState == null) {
             fetchMovies(SORT_TYPE_1);
         } else {
             fillAdapterOnSelection(savedInstanceState.getInt(SORT_TYPE_SELECTION, R.id.action_popular));
@@ -69,10 +73,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private void fetchMovies(String sortBy) {
+        Log.i(LOG_TAG, sortBy);
         if (!sortBy.equals(SORT_TYPE_3)) {
+            recyclerView.setAdapter(movieAdapter);
             FetchMoviesTask moviesTask = new FetchMoviesTask(movieAdapter);
             moviesTask.execute(sortBy);
         } else {
+            recyclerView.setAdapter(favoriteAdapter);
             getSupportLoaderManager().initLoader(FAVORITE_LOADER_ID, null, this);
         }
 
@@ -89,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 break;
             case R.id.action_favorite:
                 fetchMovies(SORT_TYPE_3);
+                break;
         }
     }
 
@@ -110,10 +118,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         String[] projection = {
                 MovieContract.MovieEntry.COLUMN_MOVIE_ID,
                 MovieContract.MovieEntry.COLUMN_MOVIE_TITLE,
-                MovieContract.MovieEntry.COLUMN_MOVIE_POSTER_PATH,
                 MovieContract.MovieEntry.COLUMN_MOVIE_DESCRIPTION,
-                MovieContract.MovieEntry.COLUMN_MOVIE_VOTE_AVERAGE,
-                MovieContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE
+                MovieContract.MovieEntry.COLUMN_MOVIE_POSTER_PATH,
+                MovieContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE,
+                MovieContract.MovieEntry.COLUMN_MOVIE_VOTE_AVERAGE
         };
         return new CursorLoader(
                 this,
@@ -127,11 +135,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        movieAdapter.addAll(data);
+        favoriteAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
+        favoriteAdapter.swapCursor(null);
     }
 }

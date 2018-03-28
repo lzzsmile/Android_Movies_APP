@@ -28,6 +28,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
+
+        <provider
+            android:authorities="zhuangzhi.android.movies"
+            android:name="zhuangzhi.android.movies.data.MovieProvider"
+            android:exported="false" />
+
     </application>
 
 </manifest>

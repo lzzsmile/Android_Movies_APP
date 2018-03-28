@@ -104,11 +104,12 @@ public class DetailActivity extends AppCompatActivity {
         String releaseDate = movie.getReleaseDate();
         double userRating = movie.getUserRating();
         String overView = movie.getOverview();
+        String rating = "IMDB: " + String.valueOf(userRating) + "/10";
 
         Picasso.with(this).load(posterUrl).into(moviePoster);
         movieTitle.setText(title);
         movieReleaseDate.setText(releaseDate);
-        movieVoteAverage.setText("IMDB: " + String.valueOf(userRating));
+        movieVoteAverage.setText(rating);
         movieSynopsis.setText(overView);
         movieRating.setRating(Float.valueOf(String.valueOf(userRating)));
 
@@ -133,7 +134,6 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void changeToFavorite() {
-        Log.i(LOG_TAG, "Add to favorite");
         favIcon.setImageResource(R.drawable.ic_favorite_black_24dp);
     }
 
